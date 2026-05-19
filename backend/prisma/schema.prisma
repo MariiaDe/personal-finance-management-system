@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TransactionType {
+  income
+  expense
+}
+
+enum TransactionSource {
+  manual
+  bank
+}
+
+enum GoalStatus {
+  active
+  completed
+  cancelled
+}
+
+model User {
+  id                     Int            @id @default(autoincrement())
+  name                   String
+  email                  String         @unique
+  password               String
+  preferredCurrency      String         @default("UAH")
+  recommendationsEnabled Boolean        @default(true)
+  recommendationPeriod   String         @default("month")
+  recommendationFrom     DateTime?
+  recommendationTo       DateTime?
+  createdAt              DateTime       @default(now())
+
+  categories             Category[]
+  transactions           Transaction[]
+  budgets                Budget[]
+  goals                  Goal[]
+  bankAccounts           BankAccount[]
+}
+
+model Category {
+  id            Int            @id @default(autoincrement())
+  name          String
+  type          TransactionType
+  icon          String         @default("categories")
+
+  userId        Int
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  transactions  Transaction[]
+  budgets       Budget[]
+
+  createdAt     DateTime       @default(now())
+}
+
+model Transaction {
+  id            Int               @id @default(autoincrement())
+  amount        Float
+  description   String
+  type          TransactionType
+  source        TransactionSource @default(manual)
+  date          DateTime
+  externalId    String?           @unique
+
+  userId        Int
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  categoryId    Int
+  category      Category          @relation(fields: [categoryId], references: [id])
+
+  bankAccountId Int?
+  bankAccount   BankAccount?      @relation(fields: [bankAccountId], references: [id])
+
+  createdAt     DateTime          @default(now())
+}
+
+model Budget {
+  id            Int        @id @default(autoincrement())
+  amountLimit   Float
+  month         Int
+  year          Int
+
+  userId        Int
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  categoryId    Int
+  category      Category   @relation(fields: [categoryId], references: [id])
+
+  createdAt     DateTime   @default(now())
+
+  @@unique([userId, categoryId, month, year])
+}
+
+model Goal {
+  id            Int         @id @default(autoincrement())
+  title         String
+  targetAmount  Float
+  savedAmount   Float       @default(0)
+  deadline      DateTime?
+  status        GoalStatus  @default(active)
+
+  userId        Int
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime    @default(now())
+}
+
+model BankAccount {
+  id              Int            @id @default(autoincrement())
+  bankName        String
+  accountName     String?
+  accountNumber   String?
+  iban            String?
+  accessToken     String?
+  refreshToken    String?
+  providerUserId  String?
+  isActive        Boolean        @default(true)
+
+  userId          Int
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  transactions    Transaction[]
+
+  createdAt       DateTime       @default(now())
+}
