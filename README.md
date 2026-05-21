@@ -51,6 +51,34 @@
 
 ---
 
+## Технології та бібліотеки
+
+### Backend
+
+- `express`
+- `cors`
+- `dotenv`
+- `bcrypt`
+- `jsonwebtoken`
+- `pg`
+- `prisma`
+- `@prisma/client`
+- `nodemon`
+
+### Frontend
+
+- `react`
+- `react-dom`
+- `react-router-dom`
+- `vite`
+- `axios`
+- `tailwindcss`
+- `@tailwindcss/vite`
+- `eslint`
+- `@vitejs/plugin-react`
+
+---
+
 ## Структура проєкту
 
 ```text
@@ -170,52 +198,112 @@ dyplom/
 
 ---
 
-## Як запустити проєкт з репозиторію
+## Детальна інструкція запуску проєкту з репозиторію
 
+### Крок 1. Встановити необхідні програми
 
-### 1. Встановити необхідне програмне забезпечення
+Потрібно попередньо встановити:
 
-Потрібно мати:
+1. [Git](https://git-scm.com/)
+2. [Node.js](https://nodejs.org/)
+3. [PostgreSQL](https://www.postgresql.org/)
+4. За бажанням: `pgAdmin` для зручної роботи з базою даних
 
-- [Node.js](https://nodejs.org/)
-- npm
-- [PostgreSQL](https://www.postgresql.org/)
-- Git
-
-Перевірка:
+Після встановлення перевірити команди:
 
 ```bash
+git --version
 node -v
 npm -v
-git --version
 ```
 
-### 2. Клонувати репозиторій
+Якщо команди спрацювали, середовище готове.
+
+### Крок 2. Клонувати репозиторій
+
+Відкрити термінал і виконати:
 
 ```bash
 git clone https://github.com/MariiaDe/personal-finance-management-system.git
+```
+
+Потім перейти в папку проєкту:
+
+```bash
 cd personal-finance-management-system
 ```
 
-Якщо локальна папка має іншу назву, далі використовуйте саме її.
+### Крок 3. Встановити бібліотеки для backend
 
-### 3. Встановити залежності
-
-#### Backend
+Перейти у папку backend:
 
 ```bash
 cd backend
-npm install
 ```
 
-#### Frontend
+Встановити всі бібліотеки однією командою:
 
 ```bash
-cd ../frontend
 npm install
 ```
 
-### 4. Створити базу даних PostgreSQL
+Ця команда встановить:
+
+- `express`
+- `cors`
+- `dotenv`
+- `bcrypt`
+- `jsonwebtoken`
+- `pg`
+- `prisma`
+- `@prisma/client`
+- `nodemon`
+
+Після завершення має з’явитися папка:
+
+```text
+backend/node_modules
+```
+
+### Крок 4. Встановити бібліотеки для frontend
+
+Повернутися в корінь проєкту:
+
+```bash
+cd ..
+```
+
+Перейти у папку frontend:
+
+```bash
+cd frontend
+```
+
+Встановити всі бібліотеки:
+
+```bash
+npm install
+```
+
+Ця команда встановить:
+
+- `react`
+- `react-dom`
+- `react-router-dom`
+- `vite`
+- `axios`
+- `tailwindcss`
+- `@tailwindcss/vite`
+- `eslint`
+- `@vitejs/plugin-react`
+
+Після завершення має з’явитися папка:
+
+```text
+frontend/node_modules
+```
+
+### Крок 5. Створити базу даних PostgreSQL
 
 Потрібно створити базу даних, наприклад:
 
@@ -223,21 +311,27 @@ npm install
 finance_db
 ```
 
-Базу можна створити через `pgAdmin` або SQL-запит:
+SQL-команда:
 
 ```sql
 CREATE DATABASE finance_db;
 ```
 
-### 5. Створити файл `.env` у папці `backend`
+Якщо база створюється через `pgAdmin`, назва також має бути:
 
-Шлях:
+```text
+finance_db
+```
+
+### Крок 6. Створити файл `.env` у backend
+
+Потрібно створити файл:
 
 ```text
 backend/.env
 ```
 
-Приклад вмісту:
+Приклад готового вмісту:
 
 ```env
 PORT=5000
@@ -245,74 +339,135 @@ DATABASE_URL="postgresql://postgres:YOUR_PASSWORD@localhost:3000/finance_db?sche
 JWT_SECRET=your_secret_key
 ```
 
-Пояснення:
+Що треба замінити:
 
-- `YOUR_PASSWORD` потрібно замінити на пароль користувача PostgreSQL
-- `JWT_SECRET` можна задати довільним секретним рядком
+- `YOUR_PASSWORD` → ваш пароль від PostgreSQL
+- `your_secret_key` → довільний секретний ключ для JWT
 
-### 6. Синхронізувати Prisma-схему з базою даних
+### Крок 7. Синхронізувати Prisma-схему з базою даних
+
+Перейти в backend:
 
 ```bash
-cd backend
+cd ../backend
+```
+
+Виконати:
+
+```bash
 npx prisma db push
+```
+
+Після цього виконати:
+
+```bash
 npx prisma generate
 ```
 
-Це створить потрібні таблиці відповідно до поточної схеми проєкту.
+Ці команди:
 
-### 7. Запустити backend
+- створять таблиці в базі даних
+- синхронізують структуру БД
+- згенерують Prisma Client
+
+### Крок 8. Запустити backend
+
+У папці `backend` виконати:
 
 ```bash
-cd backend
 npm run dev
 ```
 
-Після запуску сервер має бути доступний за адресою:
+Очікуваний результат:
+
+```text
+Server running on http://localhost:5000
+```
+
+Backend має бути доступний за адресою:
 
 ```text
 http://localhost:5000
 ```
 
-### 8. Запустити frontend
+### Крок 9. Запустити frontend
 
-В окремому терміналі:
+Відкрити **новий термінал**.
+
+Перейти в папку frontend:
+
+```bash
+cd personal-finance-management-system/frontend
+```
+
+Або, якщо ви вже у корені проєкту:
 
 ```bash
 cd frontend
+```
+
+Запустити:
+
+```bash
 npm run dev
 ```
 
-Після запуску Vite зазвичай відкриває застосунок за адресою:
+Очікуваний результат:
+
+```text
+Local: http://localhost:5173
+```
+
+Frontend має відкриватися за адресою:
 
 ```text
 http://localhost:5173
 ```
 
-### 9. Відкрити застосунок у браузері
+### Крок 10. Відкрити застосунок у браузері
 
-Перейдіть на:
+Відкрити:
 
 ```text
 http://localhost:5173
 ```
 
-### 10. Зареєструвати тестового користувача
+### Крок 11. Перше тестування системи
 
-Після відкриття застосунку:
+Після відкриття застосунку рекомендується:
 
-1. перейдіть на сторінку реєстрації
-2. створіть нового користувача
-3. виконайте вхід
+1. перейти на сторінку реєстрації
+2. створити нового користувача
+3. увійти в систему
+4. створити категорії
+5. створити операції
+6. створити бюджет
+7. створити фінансову ціль
+8. перевірити статистику
+9. перевірити профіль
+10. протестувати симуляцію банку
 
-Після цього можна:
+---
 
-- створювати категорії
-- створювати операції
-- створювати бюджети
-- створювати цілі
-- відкривати статистику
-- тестувати рекомендації
-- тестувати симуляцію банку
+## Команди запуску в скороченому вигляді
+
+### Backend
+
+```bash
+cd backend
+npm install
+npx prisma db push
+npx prisma generate
+npm run dev
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 ---
 
@@ -396,7 +551,7 @@ npm run dev
 
 ### Помилка `500` на `/api/dashboard` або `/api/profile`
 
-Переконайтесь, що:
+Переконайтесь, що виконані команди:
 
 ```bash
 cd backend
@@ -435,3 +590,10 @@ http://localhost:5000
 
 ## Screenshots
 
+Сюди можна додати скріншоти інтерфейсу:
+
+- екран входу
+- дашборд
+- операції
+- статистика
+- профіль
