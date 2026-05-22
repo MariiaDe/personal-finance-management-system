@@ -5,7 +5,8 @@ import { getDashboardData } from "../api/dashboardApi";
 import { formatCurrency } from "../utils/format";
 import Icon from "../components/Icon";
 import PieChart from "../components/PieChart";
-import PeriodFilter, { defaultFilter } from "../components/PeriodFilter";
+import PeriodFilter from "../components/PeriodFilter";
+import { defaultFilter } from "../utils/periodFilter";
 
 export default function StatisticsPage() {
   const { token } = useAuth();

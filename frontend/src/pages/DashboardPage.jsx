@@ -4,7 +4,8 @@ import { getDashboardData } from "../api/dashboardApi";
 import Navbar from "../components/Navbar";
 import Icon from "../components/Icon";
 import { formatCurrency } from "../utils/format";
-import PeriodFilter, { defaultFilter } from "../components/PeriodFilter";
+import PeriodFilter from "../components/PeriodFilter";
+import { defaultFilter } from "../utils/periodFilter";
 
 export default function DashboardPage() {
   const { token, logout } = useAuth();

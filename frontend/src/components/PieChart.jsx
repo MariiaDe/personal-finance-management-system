@@ -52,7 +52,19 @@ export default function PieChart({
       }))
     : [];
 
-  let currentAngle = 0;
+  const slices = prepared.reduce((result, item) => {
+    const startAngle = result.currentAngle;
+    const endAngle = startAngle + (item.share / 100) * 360;
+
+    result.items.push({
+      ...item,
+      startAngle,
+      endAngle
+    });
+    result.currentAngle = endAngle;
+
+    return result;
+  }, { currentAngle: 0, items: [] }).items;
 
   return (
     <section className="panel">
@@ -67,20 +79,14 @@ export default function PieChart({
           <div className="donut-chart">
             <svg viewBox="0 0 120 120" className="donut-chart__svg" aria-hidden="true">
               <circle className="donut-chart__track" cx="60" cy="60" r="42" />
-              {prepared.map((item) => {
-                const startAngle = currentAngle;
-                const endAngle = currentAngle + (item.share / 100) * 360;
-                currentAngle = endAngle;
-
-                return (
-                  <path
-                    key={item.label}
-                    d={describeArc(60, 60, 42, startAngle, endAngle)}
-                    className="donut-chart__slice"
-                    style={{ stroke: item.color }}
-                  />
-                );
-              })}
+              {slices.map((item) => (
+                <path
+                  key={item.label}
+                  d={describeArc(60, 60, 42, item.startAngle, item.endAngle)}
+                  className="donut-chart__slice"
+                  style={{ stroke: item.color }}
+                />
+              ))}
             </svg>
 
             <div className="donut-chart__center">

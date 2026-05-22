@@ -1,11 +1,3 @@
-const defaultFilter = {
-  period: "month",
-  from: "",
-  to: ""
-};
-
-export { defaultFilter };
-
 export default function PeriodFilter({
   value,
   onChange,
