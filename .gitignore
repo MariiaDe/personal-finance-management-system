@@ -20,5 +20,10 @@ yarn-error.log*
 Thumbs.db
 .vscode/
 
+# documents
+*.doc
+*.docx
+*.pdf
+
 # prisma / cache
 backend/node_modules/.prisma/
